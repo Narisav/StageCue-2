@@ -1,9 +1,12 @@
+#pragma once
+
 #include <Arduino.h>
 
-#ifndef DISPLAY_MANAGER_H
-#define DISPLAY_MANAGER_H
+namespace stagecue {
 
-void initDisplay();
-void updateDisplay(int index, const String &text);
+bool initDisplay();
+void updateDisplay(uint8_t index, const String &text);
+void clearDisplay(uint8_t index);
 
-#endif
+}  // namespace stagecue
+

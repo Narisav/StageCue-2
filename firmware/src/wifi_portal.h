@@ -1,6 +1,13 @@
-#ifndef WIFI_PORTAL_H
-#define WIFI_PORTAL_H
+#pragma once
 
-void startWiFiWithPortal();  // Connecte ou lance le portail captif
+#include <Arduino.h>
 
-#endif
+namespace stagecue {
+
+bool startWiFiWithPortal();
+bool saveWifiCredentials(const String &ssid, const String &password);
+bool connectToSavedNetwork(uint32_t timeoutMs = 10000);
+void startFallbackAccessPoint();
+
+}  // namespace stagecue
+

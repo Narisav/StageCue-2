@@ -1,30 +1,33 @@
+#pragma once
+
 #include <Arduino.h>
+#include <stddef.h>
 
-#ifndef CONFIG_H
-#define CONFIG_H
+namespace stagecue {
 
-//WIFI 
-  //Local Connect Mode
-#define WIFI_SSID     "TON_SSID"
-#define WIFI_PASSWORD "TON_PASSWORD"
-  //Access Point Mode
-#define FALLBACK_AP_SSID "CueLight_AP"
-#define FALLBACK_AP_PASS "12345678"
+// ──────────────────────────────────────────────────────────────────────────────
+// Wi-Fi configuration
+// ──────────────────────────────────────────────────────────────────────────────
+inline constexpr char kFallbackApSsid[] = "CueLight_AP";
+inline constexpr char kFallbackApPass[] = "12345678";
 
-// OLED
-#define SCREEN_WIDTH 128
-#define SCREEN_HEIGHT 64
-#define OLED_ADDRESS 0x3C
+// ──────────────────────────────────────────────────────────────────────────────
+// Display configuration
+// ──────────────────────────────────────────────────────────────────────────────
+inline constexpr uint8_t kScreenWidth = 128;
+inline constexpr uint8_t kScreenHeight = 64;
+inline constexpr uint8_t kOledBaseAddress = 0x3C;
 
-// Cues
-#define CUE_COUNT 3
+// ──────────────────────────────────────────────────────────────────────────────
+// Cue configuration
+// ──────────────────────────────────────────────────────────────────────────────
+inline constexpr size_t kCueCount = 3U;
+inline constexpr uint8_t kCueLEDs[kCueCount] = {25, 26, 27};
+inline constexpr uint8_t kCueButtons[kCueCount] = {32, 33, 34};
+inline constexpr uint32_t kCueAutoReleaseMillis = 1500U;
+inline constexpr uint32_t kButtonDebounceMillis = 50U;
 
-extern const char* defaultCueTexts[CUE_COUNT];
+extern const char *const kDefaultCueTexts[kCueCount];
 
-// LED Pins (à adapter selon ton câblage)
-const int cueLEDs[CUE_COUNT] = {25, 26, 27};
+}  // namespace stagecue
 
-// Boutons (si tu veux piloter localement)
-const int cueButtons[CUE_COUNT] = {32, 33, 34};
-
-#endif

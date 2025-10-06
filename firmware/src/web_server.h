@@ -1,8 +1,12 @@
+#pragma once
+
 #include <Arduino.h>
 
-#ifndef WEB_SERVER_H
-#define WEB_SERVER_H
+namespace stagecue {
 
 void startWebServer();
+void notifyCueState(uint8_t index, const String &text, bool active);
+void notifyAllCueStates();
 
-#endif
+}  // namespace stagecue
+

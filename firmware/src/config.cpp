@@ -1,3 +1,7 @@
 #include "config.h"
 
-const char* defaultCueTexts[CUE_COUNT] = { "Cue 1", "Cue 2", "Cue 3" };
+namespace stagecue {
+
+const char *const kDefaultCueTexts[kCueCount] = {"Cue 1", "Cue 2", "Cue 3"};
+
+}  // namespace stagecue

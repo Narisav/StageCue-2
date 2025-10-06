@@ -1,31 +1,72 @@
 #include "display_manager.h"
-#include "config.h"
-#include <Arduino.h>
-#include <Wire.h>
+
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#include <Wire.h>
+#include <array>
 
-Adafruit_SSD1306 displays[CUE_COUNT] = {
-  Adafruit_SSD1306(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1),
-  Adafruit_SSD1306(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1),
-  Adafruit_SSD1306(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1),
+#include "config.h"
+
+namespace stagecue {
+
+namespace {
+
+static_assert(kCueCount == 3, "Display array initialisers must match cue count");
+
+std::array<Adafruit_SSD1306, kCueCount> gDisplays = {
+    Adafruit_SSD1306(kScreenWidth, kScreenHeight, &Wire, -1),
+    Adafruit_SSD1306(kScreenWidth, kScreenHeight, &Wire, -1),
+    Adafruit_SSD1306(kScreenWidth, kScreenHeight, &Wire, -1),
 };
 
-void initDisplay() {
-  for (int i = 0; i < CUE_COUNT; i++) {
-    displays[i].begin(SSD1306_SWITCHCAPVCC, OLED_ADDRESS + i);
-    displays[i].clearDisplay();
-    displays[i].display();
+std::array<bool, kCueCount> gDisplayReady{};
+
+}  // namespace
+
+bool initDisplay() {
+  Wire.begin();
+
+  bool allReady = true;
+  for (uint8_t i = 0; i < kCueCount; ++i) {
+    const uint8_t address = static_cast<uint8_t>(kOledBaseAddress + i);
+    if (!gDisplays[i].begin(SSD1306_SWITCHCAPVCC, address)) {
+      Serial.print(F("[Display] Failed to init OLED at 0x"));
+      Serial.println(address, HEX);
+      gDisplayReady[i] = false;
+      allReady = false;
+      continue;
+    }
+
+    gDisplayReady[i] = true;
+    clearDisplay(i);
   }
+
+  return allReady;
 }
 
-void updateDisplay(int index, const String &text) {
-  if (index >= 0 && index < CUE_COUNT) {
-    displays[index].clearDisplay();
-    displays[index].setTextSize(1);
-    displays[index].setTextColor(SSD1306_WHITE);
-    displays[index].setCursor(0, 0);
-    displays[index].println(text);
-    displays[index].display();
+void updateDisplay(uint8_t index, const String &text) {
+  if (index >= gDisplays.size() || !gDisplayReady[index]) {
+    return;
   }
+
+  auto &display = gDisplays[index];
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(SSD1306_WHITE);
+  display.setCursor(0, 0);
+  display.println(text);
+  display.display();
 }
+
+void clearDisplay(uint8_t index) {
+  if (index >= gDisplays.size() || !gDisplayReady[index]) {
+    return;
+  }
+
+  auto &display = gDisplays[index];
+  display.clearDisplay();
+  display.display();
+}
+
+}  // namespace stagecue
+
