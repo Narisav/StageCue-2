@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cue Light</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>StageCue</h1>
+      <p class="subtitle">Panneau de contrôle</p>
+    </header>
+
+    <section class="cues" id="cues">
+      <article class="cue" data-cue="0">
+        <label for="text0">Texte Cue 1</label>
+        <input type="text" id="text0" autocomplete="off" placeholder="Entrez le texte" data-cue-input="0" />
+        <div class="actions">
+          <button type="button" class="cue-trigger" data-cue="0">🚨 Déclencher</button>
+          <button type="button" class="cue-release" data-cue="0">🛑 Libérer</button>
+        </div>
+      </article>
+
+      <article class="cue" data-cue="1">
+        <label for="text1">Texte Cue 2</label>
+        <input type="text" id="text1" autocomplete="off" placeholder="Entrez le texte" data-cue-input="1" />
+        <div class="actions">
+          <button type="button" class="cue-trigger" data-cue="1">🚨 Déclencher</button>
+          <button type="button" class="cue-release" data-cue="1">🛑 Libérer</button>
+        </div>
+      </article>
+
+      <article class="cue" data-cue="2">
+        <label for="text2">Texte Cue 3</label>
+        <input type="text" id="text2" autocomplete="off" placeholder="Entrez le texte" data-cue-input="2" />
+        <div class="actions">
+          <button type="button" class="cue-trigger" data-cue="2">🚨 Déclencher</button>
+          <button type="button" class="cue-release" data-cue="2">🛑 Libérer</button>
+        </div>
+      </article>
+    </section>
+
+    <section class="status-panel">
+      <p id="status" class="status" aria-live="polite">🕓 Connexion WebSocket...</p>
+      <p id="wifiStatus" class="status"></p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
